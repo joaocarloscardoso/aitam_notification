@@ -11,14 +11,20 @@ app.get('/', function(req, res) {
 });
 */
 
+let interval;
+
 http.listen(3010, function() {
     console.log('server listening on port: 3010');
     io.on("connection", socket => {
         console.log("New client connected: " + socket.id);
 
         socket.on("requestCUBE", function(message){
-            service.CreateRequest(message.sessionid, message.objectid, message.subject);
+            service.CreateRequest(message.sessionid, message.objectid, message.subject, socket.id);
             console.log(message);
+            io.emit( 'responseCUBE', {
+                title: "aa",
+                explanation: "notification valid and tested!"
+            });
         });
 
         socket.on("disconnect", () => {
