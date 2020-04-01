@@ -21,11 +21,16 @@ http.listen(3010, function() {
         socket.on("requestCUBE", function(message){
             service.CreateRequest(message.sessionid, message.objectid, message.subject, socket.id);
             console.log(message);
-            io.emit( 'responseCUBE', {
-                title: "aa",
-                explanation: "notification valid and tested!"
-            });
+            //io.emit( 'responseCUBE', {
+            //    title: "aa",
+            //    explanation: "notification valid and tested!"
+            //});
         });
+
+        if (interval) {
+            clearInterval(interval);
+        }
+        interval = setInterval(() => service.ListenerOpenRequests(io), 10000);
 
         socket.on("disconnect", () => {
             console.log("Client disconnected");
